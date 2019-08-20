@@ -1,0 +1,63 @@
+
+#!/bin/bash
+
+function Getpublic() {
+
+aws ec2 describe-instances | jq -r '.Reservations[].Instances[].PublicIpAddress'
+
+}
+
+function GetDns() {
+
+aws ec2 describe-instances | jq -r '.Reservations[].Instances[].PublicDnsName'
+
+}
+
+
+
+function GetPrivate() {
+
+
+aws ec2 describe-instances | jq -r '.Reservations[].Instances[].PrivateIpAddress'
+}
+
+
+
+
+function userselection () { 
+
+select get in 'PublicIp' 'PrivateIp' 'PublicDNS'; do
+	choice=${get}
+	case $choice in
+		PublicIp)
+			Getpublic
+			break
+		;;
+		PrivateIp)
+			GetPrivate
+			break
+		;;
+		PublicDNS)
+			GetDns
+			break
+		;;
+	esac
+done
+
+
+}
+
+
+while getopts "sa" opt; do
+	case $opt in
+		s)userselection
+			;;
+		a)Getpublic ; GetPrivate
+			;;
+		*)echo "selectsomething"
+			exit 1
+			;;
+	esac
+done
+
+
