@@ -1,0 +1,8 @@
+
+
+#!/bin/bash
+
+function creating_ASG_with_LC [] {
+ws autoscaling create-auto-scaling-group --auto-scaling-group-name my-asg --launch-configuration-name LC_AMI_Tim --min-size 1 --max-size 3 --vpc-zone-identifier "subnet-1bcb7661"
+
+}
